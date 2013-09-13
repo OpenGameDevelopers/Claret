@@ -24,8 +24,8 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\..\bin\Xbox 360\Debug</OutputPath>
-	<IntermediateOutputPath>..\..\obj\Xbox 360\Debug</IntermediateOutputPath>
-	<BaseIntermediateOutputPath>..\..\obj\Xbox 360\Debug</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>..\..\obj\Xbox 360\Debug</IntermediateOutputPath>
+    <BaseIntermediateOutputPath>..\..\obj\Xbox 360\Debug</BaseIntermediateOutputPath>
     <DefineConstants>DEBUG;TRACE;XBOX;XBOX360</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -36,8 +36,8 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|Xbox 360' ">
     <DebugType>pdbonly</DebugType>
-	<IntermediateOutputPath>..\..\obj\Xbox 360\Release</IntermediateOutputPath>
-	<BaseIntermediateOutputPath>..\..\obj\Xbox 360\Release</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>..\..\obj\Xbox 360\Release</IntermediateOutputPath>
+    <BaseIntermediateOutputPath>..\..\obj\Xbox 360\Release</BaseIntermediateOutputPath>
     <Optimize>true</Optimize>
     <OutputPath>..\..\bin\Xbox 360\Release</OutputPath>
     <DefineConstants>XBOX;XBOX360</DefineConstants>
@@ -51,8 +51,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Profile|Xbox 360'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>..\..\bin\Xbox 360\Profile\</OutputPath>
-	<IntermediateOutputPath>..\..\obj\Xbox 360\Profile</IntermediateOutputPath>
-	<BaseIntermediateOutputPath>..\..\obj\Xbox 360\Profile</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>..\..\obj\Xbox 360\Profile</IntermediateOutputPath>
+    <BaseIntermediateOutputPath>..\..\obj\Xbox 360\Profile</BaseIntermediateOutputPath>
     <DefineConstants>TRACE;XBOX;XBOX360;PROFILE</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <DebugType>full</DebugType>
@@ -81,9 +81,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AssemblyInfo.cs.tmpl" />
+    <Compile Include="Game.cs" />
+    <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Game1.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
