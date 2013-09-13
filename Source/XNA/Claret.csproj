@@ -80,8 +80,11 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Player.cs" />
+    <Compile Include="RenderableEntity.cs" />
     <None Include="Properties\AssemblyInfo.cs.tmpl" />
     <Compile Include="Game.cs" />
+    <Compile Include="GameEntity.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

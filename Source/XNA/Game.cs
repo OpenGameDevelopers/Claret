@@ -12,11 +12,6 @@ namespace Claret
 
     public class Game
 	{
-		private GraphicsDevice m_Device;
-		private GraphicsAdapter m_Adapter;
-		private bool m_Quit;
-		private Color			m_ClearColour;
-		readonly double m_MicrosecondsTick = 1000000D/Stopwatch.Frequency;
 
 		public Game( )
 		{
@@ -163,5 +158,11 @@ namespace Claret
 #endif
 			}
 		}
+
+		private GraphicsDevice m_Device;
+		private GraphicsAdapter m_Adapter;
+		private bool m_Quit;
+		private Color			m_ClearColour;
+		readonly double m_MicrosecondsTick = 1000000D/Stopwatch.Frequency;
 	}
 }
