@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Diagnostics;
 
 namespace Claret
 {
@@ -8,12 +10,13 @@ namespace Claret
 		public bool SkipSplash { get; set; }
     }
 
-	public class Game
+    public class Game
 	{
 		private GraphicsDevice m_Device;
 		private GraphicsAdapter m_Adapter;
 		private bool m_Quit;
 		private Color			m_ClearColour;
+		readonly double m_MicrosecondsTick = 1000000D/Stopwatch.Frequency;
 
 		public Game( )
 		{
@@ -26,8 +29,15 @@ namespace Claret
 			Presentation.BackBufferHeight =
 				m_Adapter.CurrentDisplayMode.Height;
 			Presentation.BackBufferFormat = SurfaceFormat.Color;
+			Presentation.DepthStencilFormat = DepthFormat.Depth24Stencil8;
+			Presentation.RenderTargetUsage = RenderTargetUsage.DiscardContents;
 #if DEBUG
-			System.Diagnostics.Debug.WriteLine( "" );
+			Presentation.PresentationInterval = PresentInterval.Immediate;
+#endif
+
+            #region Debug Information
+#if DEBUG
+            System.Diagnostics.Debug.WriteLine( "" );
 			System.Diagnostics.Debug.WriteLine(
                 "----------------------------" );
 			System.Diagnostics.Debug.WriteLine(
@@ -48,14 +58,22 @@ namespace Claret
 			foreach( DisplayMode Mode in m_Adapter.SupportedDisplayModes )
             {
 				System.Diagnostics.Debug.WriteLine( "\t\t" +
-					Mode.Width + "x" + Mode.Height );
+					Mode.Width + "x" + Mode.Height + "\t[TS] " +
+                    Mode.TitleSafeArea.X + "," + Mode.TitleSafeArea.Y + " " +
+                    Mode.TitleSafeArea.Width + "x" +
+                    Mode.TitleSafeArea.Height );
             }
 			System.Diagnostics.Debug.WriteLine( "\tCurrent Resolution: " +
-				m_Adapter.CurrentDisplayMode.Width.ToString( ) + "x" +
-                m_Adapter.CurrentDisplayMode.Height.ToString( ) );
+				m_Adapter.CurrentDisplayMode.Width + "x" +
+                m_Adapter.CurrentDisplayMode.Height + " [TS] " +
+                m_Adapter.CurrentDisplayMode.TitleSafeArea.X + "," +
+                m_Adapter.CurrentDisplayMode.TitleSafeArea.Y + " " +
+                m_Adapter.CurrentDisplayMode.TitleSafeArea.Width + "x" +
+                m_Adapter.CurrentDisplayMode.TitleSafeArea.Height );
 #endif
+            #endregion
 
-			m_Device = new GraphicsDevice( m_Adapter, GraphicsProfile.HiDef,
+            m_Device = new GraphicsDevice( m_Adapter, GraphicsProfile.HiDef,
 				Presentation );
 		}
 
@@ -63,8 +81,10 @@ namespace Claret
 		{
 			m_Quit = false;
 			m_ClearColour = new Color( 0.25f, 0.0f, 0.0f );
+
+            #region Debug Information
 #if DEBUG
-			System.Diagnostics.Debug.WriteLine( "" );
+            System.Diagnostics.Debug.WriteLine( "" );
 			System.Diagnostics.Debug.WriteLine( "--------------" );
 			System.Diagnostics.Debug.WriteLine( "Game Arguments" );
 			System.Diagnostics.Debug.WriteLine( "--------------" );
@@ -80,10 +100,12 @@ namespace Claret
             }
 			System.Diagnostics.Debug.WriteLine( "" );
 #endif
-			return 1;
+			#endregion
+
+            return 1;
 		}
 
-		private void Update( )
+		private void Update( ulong p_ElapsedTime )
 		{
 		}
 
@@ -95,10 +117,50 @@ namespace Claret
 
 		public void Execute( )
 		{
+			Stopwatch Timer = new Stopwatch( );
+			Timer.Start( );
+			ulong OldTime =
+                ( ulong )( Timer.ElapsedTicks * m_MicrosecondsTick );
+			ulong ElapsedTime = 0;
+			ulong Accumulator = 0;
+			ulong TimeStep = 16667;
+#if DEBUG
+			ulong FrameTime = OldTime;
+			ulong FrameRate = 0;
+#endif
+			
 			while( !m_Quit )
 			{
-				this.Update( );
+				ulong NewTime =
+                    ( ulong )( Timer.ElapsedTicks * m_MicrosecondsTick );
+				ulong DeltaTime = NewTime - OldTime;
+
+				if( DeltaTime > 250000 )
+                {
+					DeltaTime = 250000;
+                }
+
+				OldTime = NewTime;
+
+				Accumulator += DeltaTime;
+
+				while( Accumulator >= TimeStep )
+                {
+					this.Update( TimeStep );
+					ElapsedTime += TimeStep;
+					Accumulator -= TimeStep;
+                }
 				this.Render( );
+#if DEBUG
+				++FrameRate;
+
+				if( ( NewTime - FrameTime ) > 1000000 )
+                {
+					Debug.WriteLine( "Frames per second: " + FrameRate );
+					FrameTime = NewTime;
+					FrameRate = 0;
+                }
+#endif
 			}
 		}
 	}

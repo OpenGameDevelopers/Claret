@@ -1,12 +1,7 @@
-using System;
-
 namespace Claret
 {
     static class ClaretMain
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
         static void Main( string[ ] p_Args )
         {
 			Game TheGame = new Game( );
