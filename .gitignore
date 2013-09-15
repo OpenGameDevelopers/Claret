@@ -49,3 +49,5 @@ local.properties
 *.~lock.*
 *.docstates
 
+# Git version header will change all the time #
+GitVersion.hpp
